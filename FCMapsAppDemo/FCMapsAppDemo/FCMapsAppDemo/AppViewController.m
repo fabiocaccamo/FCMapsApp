@@ -98,14 +98,6 @@
 
 -(void)btnTouched:(UIButton *)sender
 {
-    if(![FCMapsApp isGoogleMapsInstalled])
-    {
-    [[[UIAlertView alloc] initWithTitle:@"Maps is not installed!" message:@"The default maps App will be used..." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
-     
-     //[[[UIAlertView alloc] initWithTitle:@"Maps is not installed!" message:@"Install Maps App and retry..." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
-     //return;
-     }
-    
     CLLocationCoordinate2D knz = CLLocationCoordinate2DMake(45.07662582, 7.67537260);
     CLLocationCoordinate2D ats = CLLocationCoordinate2DMake(-21.96656150, -47.93837670);
     
