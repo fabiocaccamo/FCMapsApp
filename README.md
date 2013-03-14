@@ -1,4 +1,4 @@
-#FCGoogleMapsApp
+#FCMapsApp
 
 Utility class that provides many methods for launch the Maps App.
 The class try to launch the GoogleMaps app, in case GoogleMaps is not installed AppleMaps will be launched.
