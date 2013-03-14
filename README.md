@@ -1,7 +1,7 @@
 #FCMapsApp
 
-Utility class that provides many methods for launch the Maps App.
-The class try to launch the GoogleMaps app, in case GoogleMaps is not installed AppleMaps will be launched.
+Launch Google Maps to show a location, do a search or get directions. 
+If Google Maps is not installed Apple Maps will be used.
 
 ##Requirements & Dependecies
 
