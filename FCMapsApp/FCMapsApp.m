@@ -17,7 +17,7 @@
 @implementation FCMapsApp
 
 
-+(NSString *)formatDirectionsMode:(MapsDirectionsMode)directionsmode 
++(NSString *)formatDirectionsMode:(MapsDirectionsMode)directionsmode
 {
     NSString * directionsmodeValue = @"";
     
@@ -40,7 +40,7 @@
 }
 
 
-+(NSString *)formatLocation:(CLLocationCoordinate2D)location as:(NSString *)as 
++(NSString *)formatLocation:(CLLocationCoordinate2D)location as:(NSString *)as
 {
     return [NSString stringWithFormat:@"%@=%f,%f", as, location.latitude, location.longitude];
 }
@@ -71,7 +71,7 @@
 }
 
 
-+(NSString *)formatViews:(int)views 
++(NSString *)formatViews:(int)views
 {
     NSString * viewsString = @"";
     NSMutableArray * viewsValues = [NSMutableArray array];
@@ -100,36 +100,45 @@
 }
 
 
+static BOOL _useGoogleMaps = TRUE;
+
+
++(void)useGoogleMaps:(BOOL)value
+{
+    _useGoogleMaps = value;
+}
+
+
 +(BOOL)isGoogleMapsInstalled
 {
     return [[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:kGOOGLE_MAPS_URL_SCHEME]];
 }
 
 
-+(void)launchWithDirectionsFromCurrentLocationToLocation:(CLLocationCoordinate2D)toLocation withTransportationMode:(MapsDirectionsMode)transportationMode 
++(void)launchWithDirectionsFromCurrentLocationToLocation:(CLLocationCoordinate2D)toLocation withTransportationMode:(MapsDirectionsMode)transportationMode
 {
     FCCurrentLocationGeocoder * currentLocationGeocoder = [[FCCurrentLocationGeocoder alloc] init];
     
     [currentLocationGeocoder startGeocode:^(BOOL success)
-    {
-        if(success)
-        {
-            CLLocationCoordinate2D currentLocation = currentLocationGeocoder.location.coordinate;
-            
-            [FCMapsApp launchWithDirectionsFromLocation:currentLocation toLocation:toLocation withTransportationMode:transportationMode];
-        }
-        else {
-            
-            NSArray * parameters = [NSArray arrayWithObjects:
-                          @"saddr=",
-                          [FCMapsApp formatLocation:toLocation as:@"daddr"],
-                          [FCMapsApp formatDirectionsMode:transportationMode],
-                          [FCMapsApp formatMapmode:MapsModeStandard],
-                          nil];
-            
-            [FCMapsApp launchWithParameters:parameters];
-        }
-    }];
+     {
+         if(success)
+         {
+             CLLocationCoordinate2D currentLocation = currentLocationGeocoder.location.coordinate;
+             
+             [FCMapsApp launchWithDirectionsFromLocation:currentLocation toLocation:toLocation withTransportationMode:transportationMode];
+         }
+         else {
+             
+             NSArray * parameters = [NSArray arrayWithObjects:
+                                     @"saddr=",
+                                     [FCMapsApp formatLocation:toLocation as:@"daddr"],
+                                     [FCMapsApp formatDirectionsMode:transportationMode],
+                                     [FCMapsApp formatMapmode:MapsModeStandard],
+                                     nil];
+             
+             [FCMapsApp launchWithParameters:parameters];
+         }
+     }];
 }
 
 
@@ -201,14 +210,14 @@
     FCCurrentLocationGeocoder * currentLocationGeocoder = [[FCCurrentLocationGeocoder alloc] init];
     
     [currentLocationGeocoder startGeocode:^(BOOL success)
-    {
-        if(success)
-        {
-            CLLocationCoordinate2D currentLocation = currentLocationGeocoder.location.coordinate;
-            
-            [FCMapsApp launchWithSearch:search nearLocation:currentLocation useViews:views];
-        }
-    }];
+     {
+         if(success)
+         {
+             CLLocationCoordinate2D currentLocation = currentLocationGeocoder.location.coordinate;
+             
+             [FCMapsApp launchWithSearch:search nearLocation:currentLocation useViews:views];
+         }
+     }];
 }
 
 
@@ -219,20 +228,20 @@
     NSString * urlString;
     NSURL * url;
     
-    if([FCMapsApp isGoogleMapsInstalled])
+    if(_useGoogleMaps && [FCMapsApp isGoogleMapsInstalled])
     {
         urlPrefix = kGOOGLE_MAPS_URL_SCHEME;
-    } 
+    }
     else {
         
         float iOS6 = 6.0;
         
-        if([[[UIDevice currentDevice] systemVersion] floatValue] >= iOS6)
+        if([[[UIDevice currentDevice] systemVersion] floatValue] < iOS6)
         {
-            urlPrefix = kAPPLE_MAPS_URL_SCHEME_IOS6;
+            urlPrefix = kAPPLE_MAPS_URL_SCHEME_IOS5;
         }
         else {
-            urlPrefix = kAPPLE_MAPS_URL_SCHEME_IOS5;
+            urlPrefix = kAPPLE_MAPS_URL_SCHEME_IOS6;
         }
     }
     

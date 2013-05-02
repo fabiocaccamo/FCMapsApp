@@ -100,6 +100,15 @@
 }
 
 
+static BOOL _useGoogleMaps = TRUE;
+
+
++(void)useGoogleMaps:(BOOL)value
+{
+    _useGoogleMaps = value;
+}
+
+
 +(BOOL)isGoogleMapsInstalled
 {
     return [[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:kGOOGLE_MAPS_URL_SCHEME]];
@@ -219,7 +228,7 @@
     NSString * urlString;
     NSURL * url;
     
-    if([FCMapsApp isGoogleMapsInstalled])
+    if(_useGoogleMaps && [FCMapsApp isGoogleMapsInstalled])
     {
         urlPrefix = kGOOGLE_MAPS_URL_SCHEME;
     } 
@@ -227,12 +236,12 @@
         
         float iOS6 = 6.0;
         
-        if([[[UIDevice currentDevice] systemVersion] floatValue] >= iOS6)
+        if([[[UIDevice currentDevice] systemVersion] floatValue] < iOS6)
         {
-            urlPrefix = kAPPLE_MAPS_URL_SCHEME_IOS6;
+            urlPrefix = kAPPLE_MAPS_URL_SCHEME_IOS5;
         }
         else {
-            urlPrefix = kAPPLE_MAPS_URL_SCHEME_IOS5;
+            urlPrefix = kAPPLE_MAPS_URL_SCHEME_IOS6;
         }
     }
     

@@ -16,7 +16,7 @@ typedef enum {
 
 
 typedef enum {
-    MapsViewDefault, 
+    MapsViewDefault,
     MapsViewSatellite,
     MapsViewTraffic,
 	MapsViewTransit
@@ -33,6 +33,7 @@ typedef enum {
 @interface FCMapsApp:NSObject
 
 
++(void)useGoogleMaps:(BOOL)value;
 +(BOOL)isGoogleMapsInstalled;
 
 +(void)launchWithDirectionsFromCurrentLocationToLocation:(CLLocationCoordinate2D)toLocation withTransportationMode:(MapsDirectionsMode)transportationMode;

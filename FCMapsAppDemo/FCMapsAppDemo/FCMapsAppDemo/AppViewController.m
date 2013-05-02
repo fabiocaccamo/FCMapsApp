@@ -16,86 +16,6 @@
 @implementation AppViewController
 
 
-- (id) init
-{
-    self = [super init];
-    
-    if (self)
-    {
-        float btnTop = 30.0;
-        float btnFontSize = 13.0;
-        float btnX = 15;
-        float btn2X = btnX * 2.0;
-        float btnWidth = self.view.frame.size.width - btn2X;
-        float btnHeight = 50.0;
-        
-        _btn1 = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-        [_btn1.titleLabel setFont:[UIFont systemFontOfSize:btnFontSize]];
-        _btn1.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleBottomMargin;
-        [_btn1 addTarget:self action:@selector(btnTouched:) forControlEvents:UIControlEventTouchUpInside];
-        
-        _btn2 = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-        [_btn2.titleLabel setFont:[UIFont systemFontOfSize:btnFontSize]];
-        _btn2.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleBottomMargin;
-        [_btn2 addTarget:self action:@selector(btnTouched:) forControlEvents:UIControlEventTouchUpInside];
-        
-        _btn3 = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-        [_btn3.titleLabel setFont:[UIFont systemFontOfSize:btnFontSize]];
-        _btn3.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleBottomMargin;
-        [_btn3 addTarget:self action:@selector(btnTouched:) forControlEvents:UIControlEventTouchUpInside];
-        
-        _btn4 = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-        [_btn4.titleLabel setFont:[UIFont systemFontOfSize:btnFontSize]];
-        _btn4.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleBottomMargin;
-        [_btn4 addTarget:self action:@selector(btnTouched:) forControlEvents:UIControlEventTouchUpInside];
-        
-        _btn5 = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-        [_btn5.titleLabel setFont:[UIFont systemFontOfSize:btnFontSize]];
-        _btn5.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleBottomMargin;
-        [_btn5 addTarget:self action:@selector(btnTouched:) forControlEvents:UIControlEventTouchUpInside];
-        
-        _btn6 = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-        [_btn6.titleLabel setFont:[UIFont systemFontOfSize:btnFontSize]];
-        _btn6.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleBottomMargin;
-        [_btn6 addTarget:self action:@selector(btnTouched:) forControlEvents:UIControlEventTouchUpInside];
-        
-        
-        
-        
-        _tit = [[UILabel alloc] initWithFrame:CGRectMake(btnX, 15.0, btnWidth, 20.0)];
-        [_tit setText:@"FCMapsApp launchWith..."];
-        [self.view addSubview:_tit];
-        
-        
-        [_btn1 setTitle:@"DirectionsFromCurrentLocationToLocation" forState:UIControlStateNormal];
-        _btn1.frame = CGRectMake(btnX, btnTop + 20, btnWidth, btnHeight);
-        [self.view addSubview:_btn1];
-        
-        _btn2.frame = CGRectMake(btnX, btnTop + 75, btnWidth, btnHeight);
-        [_btn2 setTitle:@"DirectionsFromLocationToLocation" forState:UIControlStateNormal];
-        [self.view addSubview:_btn2];
-        
-        [_btn3 setTitle:@"Location" forState:UIControlStateNormal];
-        _btn3.frame = CGRectMake(btnX, btnTop + 130, btnWidth, btnHeight);
-        [self.view addSubview:_btn3];
-        
-        [_btn4 setTitle:@"Search" forState:UIControlStateNormal];
-        _btn4.frame = CGRectMake(btnX, btnTop + 185, btnWidth, btnHeight);
-        [self.view addSubview:_btn4];
-        
-        [_btn5 setTitle:@"SearchNearLocation" forState:UIControlStateNormal];
-        _btn5.frame = CGRectMake(btnX, btnTop + 240, btnWidth, btnHeight);
-        [self.view addSubview:_btn5];
-        
-        [_btn6 setTitle:@"SearchNearCurrentLocation" forState:UIControlStateNormal];
-        _btn6.frame = CGRectMake(btnX, btnTop + 295, btnWidth, btnHeight);
-        [self.view addSubview:_btn6];
-    }
-    
-    return self;
-}
-
-
 -(void)btnTouched:(UIButton *)sender
 {
     CLLocationCoordinate2D knz = CLLocationCoordinate2DMake(45.07662582, 7.67537260);
@@ -136,6 +56,73 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
+    
+    float btnTop = 30.0;
+    float btnFontSize = 13.0;
+    float btnX = 15;
+    float btn2X = btnX * 2.0;
+    float btnWidth = self.view.frame.size.width - btn2X;
+    float btnHeight = 50.0;
+    
+    _btn1 = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    [_btn1.titleLabel setFont:[UIFont systemFontOfSize:btnFontSize]];
+    _btn1.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleBottomMargin;
+    [_btn1 addTarget:self action:@selector(btnTouched:) forControlEvents:UIControlEventTouchUpInside];
+    
+    _btn2 = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    [_btn2.titleLabel setFont:[UIFont systemFontOfSize:btnFontSize]];
+    _btn2.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleBottomMargin;
+    [_btn2 addTarget:self action:@selector(btnTouched:) forControlEvents:UIControlEventTouchUpInside];
+    
+    _btn3 = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    [_btn3.titleLabel setFont:[UIFont systemFontOfSize:btnFontSize]];
+    _btn3.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleBottomMargin;
+    [_btn3 addTarget:self action:@selector(btnTouched:) forControlEvents:UIControlEventTouchUpInside];
+    
+    _btn4 = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    [_btn4.titleLabel setFont:[UIFont systemFontOfSize:btnFontSize]];
+    _btn4.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleBottomMargin;
+    [_btn4 addTarget:self action:@selector(btnTouched:) forControlEvents:UIControlEventTouchUpInside];
+    
+    _btn5 = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    [_btn5.titleLabel setFont:[UIFont systemFontOfSize:btnFontSize]];
+    _btn5.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleBottomMargin;
+    [_btn5 addTarget:self action:@selector(btnTouched:) forControlEvents:UIControlEventTouchUpInside];
+    
+    _btn6 = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    [_btn6.titleLabel setFont:[UIFont systemFontOfSize:btnFontSize]];
+    _btn6.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleBottomMargin;
+    [_btn6 addTarget:self action:@selector(btnTouched:) forControlEvents:UIControlEventTouchUpInside];
+    
+    
+    _tit = [[UILabel alloc] initWithFrame:CGRectMake(btnX, 15.0, btnWidth, 20.0)];
+    [_tit setText:@"FCMapsApp launchWith..."];
+    [self.view addSubview:_tit];
+    
+    
+    [_btn1 setTitle:@"DirectionsFromCurrentLocationToLocation" forState:UIControlStateNormal];
+    _btn1.frame = CGRectMake(btnX, btnTop + 20, btnWidth, btnHeight);
+    [self.view addSubview:_btn1];
+    
+    _btn2.frame = CGRectMake(btnX, btnTop + 75, btnWidth, btnHeight);
+    [_btn2 setTitle:@"DirectionsFromLocationToLocation" forState:UIControlStateNormal];
+    [self.view addSubview:_btn2];
+    
+    [_btn3 setTitle:@"Location" forState:UIControlStateNormal];
+    _btn3.frame = CGRectMake(btnX, btnTop + 130, btnWidth, btnHeight);
+    [self.view addSubview:_btn3];
+    
+    [_btn4 setTitle:@"Search" forState:UIControlStateNormal];
+    _btn4.frame = CGRectMake(btnX, btnTop + 185, btnWidth, btnHeight);
+    [self.view addSubview:_btn4];
+    
+    [_btn5 setTitle:@"SearchNearLocation" forState:UIControlStateNormal];
+    _btn5.frame = CGRectMake(btnX, btnTop + 240, btnWidth, btnHeight);
+    [self.view addSubview:_btn5];
+    
+    [_btn6 setTitle:@"SearchNearCurrentLocation" forState:UIControlStateNormal];
+    _btn6.frame = CGRectMake(btnX, btnTop + 295, btnWidth, btnHeight);
+    [self.view addSubview:_btn6];
 }
 
 
