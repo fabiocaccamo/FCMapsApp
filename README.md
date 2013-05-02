@@ -1,7 +1,7 @@
 #FCMapsApp
 
-Launch Google Maps to show a location, do a search or get directions. 
-If Google Maps is not installed Apple Maps will be used.
+Launch Maps application to show a location, do a search or get directions. <br />
+It is possible to choose if use Google Maps (if installed used by default) or Apple Maps. <br />
 
 ##Requirements & Dependecies
 
@@ -12,33 +12,42 @@ If Google Maps is not installed Apple Maps will be used.
 ##API
 
 ```objective-c
+//check if Google Maps app is installed on the device
 +(BOOL)isGoogleMapsInstalled;
 ```
 ```objective-c
-+(BOOL)launchWithCenter:(CLLocationCoordinate2D)center 
+//if YES (and if Google Maps app is installed) use Google Maps app, if NO use Apple Maps app. default YES
++(void)useGoogleMaps;
+```
+```objective-c
++(void)launchWithCenter:(CLLocationCoordinate2D)center 
 		andZoom:(int)zoom 
 		useViews:(int)views;
 ```
 ```objective-c
-+(BOOL)launchWithDirectionsFromCurrentLocationToLocation:(CLLocationCoordinate2D)toLocation 
++(void)launchWithDirectionsFromCurrentLocationToLocation:(CLLocationCoordinate2D)toLocation 
 		withTransportationMode:(GoogleMapsDirectionsMode)transportationMode;
 ```
 ```objective-c
-+(BOOL)launchWithDirectionsFromLocation:(CLLocationCoordinate2D)fromLocation 
++(void)launchWithDirectionsFromLocation:(CLLocationCoordinate2D)fromLocation 
 		toLocation:(CLLocationCoordinate2D)toLocation 
 		withTransportationMode:(GoogleMapsDirectionsMode)transportationMode;
 ```
 ```objective-c
-+(BOOL)launchWithLocation:(CLLocationCoordinate2D)location 
++(void)launchWithLocation:(CLLocationCoordinate2D)location 
 		useViews:(int)views;
 ```
 ```objective-c
-+(BOOL)launchWithSearch:(NSString *)search 
++(void)launchWithSearch:(NSString *)search 
 		useViews:(int)views;
 ```
 ```objective-c
-+(BOOL)launchWithSearch:(NSString *)search 
++(void)launchWithSearch:(NSString *)search 
 		nearLocation:(CLLocationCoordinate2D)location 
+		useViews:(int)views;
+```
+```objective-c
++(void)launchWithSearchNearCurrentLocation:(NSString *)search 
 		useViews:(int)views;
 ```
 
