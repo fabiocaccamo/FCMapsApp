@@ -119,7 +119,7 @@ static BOOL _useGoogleMaps = TRUE;
 {
     FCCurrentLocationGeocoder * currentLocationGeocoder = [[FCCurrentLocationGeocoder alloc] init];
     
-    [currentLocationGeocoder startGeocode:^(BOOL success)
+    [currentLocationGeocoder geocode:^(BOOL success)
      {
          if(success)
          {
@@ -209,7 +209,7 @@ static BOOL _useGoogleMaps = TRUE;
 {
     FCCurrentLocationGeocoder * currentLocationGeocoder = [[FCCurrentLocationGeocoder alloc] init];
     
-    [currentLocationGeocoder startGeocode:^(BOOL success)
+    [currentLocationGeocoder geocode:^(BOOL success)
      {
          if(success)
          {
