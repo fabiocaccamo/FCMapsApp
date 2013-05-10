@@ -16,7 +16,7 @@ typedef enum {
 
 
 typedef enum {
-    MapsViewDefault, 
+    MapsViewDefault,
     MapsViewSatellite,
     MapsViewTraffic,
 	MapsViewTransit

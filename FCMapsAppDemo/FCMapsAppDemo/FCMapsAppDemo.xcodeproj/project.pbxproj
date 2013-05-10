@@ -17,9 +17,9 @@
 		C4C548F016F23A260046F783 /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C4C548EF16F23A260046F783 /* Default@2x.png */; };
 		C4C548F216F23A260046F783 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C4C548F116F23A260046F783 /* Default-568h@2x.png */; };
 		C4C548FA16F23AC00046F783 /* AppViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C4C548F916F23AC00046F783 /* AppViewController.m */; };
-		C4C5490216F23B2B0046F783 /* FCMapsApp.m in Sources */ = {isa = PBXBuildFile; fileRef = C4C5490116F23B2B0046F783 /* FCMapsApp.m */; };
 		C4C5490416F23D0C0046F783 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C4C5490316F23D0C0046F783 /* CoreLocation.framework */; };
-		C4E37305173D0471001DD97C /* FCCurrentLocationGeocoder.m in Sources */ = {isa = PBXBuildFile; fileRef = C4E37304173D0471001DD97C /* FCCurrentLocationGeocoder.m */; };
+		C4E37309173D0675001DD97C /* FCCurrentLocationGeocoder.m in Sources */ = {isa = PBXBuildFile; fileRef = C4E37308173D0675001DD97C /* FCCurrentLocationGeocoder.m */; };
+		C4E3730D173D06A7001DD97C /* FCMapsApp.m in Sources */ = {isa = PBXBuildFile; fileRef = C4E3730C173D06A7001DD97C /* FCMapsApp.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -38,11 +38,11 @@
 		C4C548F116F23A260046F783 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 		C4C548F816F23AC00046F783 /* AppViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppViewController.h; sourceTree = "<group>"; };
 		C4C548F916F23AC00046F783 /* AppViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppViewController.m; sourceTree = "<group>"; };
-		C4C5490016F23B2B0046F783 /* FCMapsApp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FCMapsApp.h; sourceTree = "<group>"; };
-		C4C5490116F23B2B0046F783 /* FCMapsApp.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FCMapsApp.m; sourceTree = "<group>"; };
 		C4C5490316F23D0C0046F783 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
-		C4E37303173D0471001DD97C /* FCCurrentLocationGeocoder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FCCurrentLocationGeocoder.h; sourceTree = "<group>"; };
-		C4E37304173D0471001DD97C /* FCCurrentLocationGeocoder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FCCurrentLocationGeocoder.m; sourceTree = "<group>"; };
+		C4E37307173D0675001DD97C /* FCCurrentLocationGeocoder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FCCurrentLocationGeocoder.h; sourceTree = "<group>"; };
+		C4E37308173D0675001DD97C /* FCCurrentLocationGeocoder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FCCurrentLocationGeocoder.m; sourceTree = "<group>"; };
+		C4E3730B173D06A7001DD97C /* FCMapsApp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FCMapsApp.h; sourceTree = "<group>"; };
+		C4E3730C173D06A7001DD97C /* FCMapsApp.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FCMapsApp.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -95,8 +95,8 @@
 				C4C548EB16F23A260046F783 /* AppDelegate.m */,
 				C4C548F816F23AC00046F783 /* AppViewController.h */,
 				C4C548F916F23AC00046F783 /* AppViewController.m */,
-				C4E37302173D0471001DD97C /* FCCurrentLocationGeocoder */,
-				C4C548FF16F23B2B0046F783 /* FCMapsApp */,
+				C4E37306173D0675001DD97C /* FCCurrentLocationGeocoder */,
+				C4E3730A173D06A7001DD97C /* FCMapsApp */,
 				C4C548E216F23A260046F783 /* Supporting Files */,
 			);
 			path = FCMapsAppDemo;
@@ -116,22 +116,22 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		C4C548FF16F23B2B0046F783 /* FCMapsApp */ = {
+		C4E37306173D0675001DD97C /* FCCurrentLocationGeocoder */ = {
 			isa = PBXGroup;
 			children = (
-				C4C5490016F23B2B0046F783 /* FCMapsApp.h */,
-				C4C5490116F23B2B0046F783 /* FCMapsApp.m */,
-			);
-			path = FCMapsApp;
-			sourceTree = "<group>";
-		};
-		C4E37302173D0471001DD97C /* FCCurrentLocationGeocoder */ = {
-			isa = PBXGroup;
-			children = (
-				C4E37303173D0471001DD97C /* FCCurrentLocationGeocoder.h */,
-				C4E37304173D0471001DD97C /* FCCurrentLocationGeocoder.m */,
+				C4E37307173D0675001DD97C /* FCCurrentLocationGeocoder.h */,
+				C4E37308173D0675001DD97C /* FCCurrentLocationGeocoder.m */,
 			);
 			path = FCCurrentLocationGeocoder;
+			sourceTree = "<group>";
+		};
+		C4E3730A173D06A7001DD97C /* FCMapsApp */ = {
+			isa = PBXGroup;
+			children = (
+				C4E3730B173D06A7001DD97C /* FCMapsApp.h */,
+				C4E3730C173D06A7001DD97C /* FCMapsApp.m */,
+			);
+			path = FCMapsApp;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -202,8 +202,8 @@
 				C4C548E816F23A260046F783 /* main.m in Sources */,
 				C4C548EC16F23A260046F783 /* AppDelegate.m in Sources */,
 				C4C548FA16F23AC00046F783 /* AppViewController.m in Sources */,
-				C4C5490216F23B2B0046F783 /* FCMapsApp.m in Sources */,
-				C4E37305173D0471001DD97C /* FCCurrentLocationGeocoder.m in Sources */,
+				C4E37309173D0675001DD97C /* FCCurrentLocationGeocoder.m in Sources */,
+				C4E3730D173D06A7001DD97C /* FCMapsApp.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
