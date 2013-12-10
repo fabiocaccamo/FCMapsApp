@@ -120,7 +120,7 @@ static BOOL _useGoogleMaps = TRUE;
     FCCurrentLocationGeocoder * currentLocationGeocoder = [[FCCurrentLocationGeocoder alloc] init];
     
     [currentLocationGeocoder geocode:^(BOOL success)
-     {
+    {
          if(success)
          {
              CLLocationCoordinate2D currentLocation = currentLocationGeocoder.location.coordinate;

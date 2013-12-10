@@ -36,6 +36,7 @@ typedef enum {
 +(void)useGoogleMaps:(BOOL)value;
 +(BOOL)isGoogleMapsInstalled;
 
+
 +(void)launchWithDirectionsFromCurrentLocationToLocation:(CLLocationCoordinate2D)toLocation withTransportationMode:(MapsDirectionsMode)transportationMode;
 +(void)launchWithDirectionsFromLocation:(CLLocationCoordinate2D)fromLocation toLocation:(CLLocationCoordinate2D)toLocation withTransportationMode:(MapsDirectionsMode)transportationMode;
 
