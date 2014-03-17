@@ -5,10 +5,11 @@
 //  Copyright (c) 2013 Fabio Caccamo. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
 #import <CoreLocation/CoreLocation.h>
+#import <Foundation/Foundation.h>
+#import <MapKit/Mapkit.h>
 
-
+/*
 typedef enum {
     MapsModeStandard,
     MapsModeStreetView
@@ -21,29 +22,43 @@ typedef enum {
     MapsViewTraffic,
 	MapsViewTransit
 } MapsView;
-
+*/
 
 typedef enum {
     MapsDirectionsModeDriving,
-	MapsDirectionsModeTransit,
     MapsDirectionsModeWalking
 } MapsDirectionsMode;
 
 
 @interface FCMapsApp:NSObject
 
++(BOOL)canLaunchAppleMaps;
++(BOOL)canLaunchGoogleMaps;
++(BOOL)canLaunchWaze;
++(BOOL)canLaunchYandexMaps;
 
-+(void)useGoogleMaps:(BOOL)value;
-+(BOOL)isGoogleMapsInstalled;
++(void)launchAppleMapsWithDirectionsFromCurrentLocationToLocation:(CLLocationCoordinate2D)toLocation transportationMode:(MapsDirectionsMode)transportationMode;
++(void)launchAppleMapsWithDirectionsFromLocation:(CLLocationCoordinate2D)fromLocation toLocation:(CLLocationCoordinate2D)toLocation transportationMode:(MapsDirectionsMode)transportationMode;
++(void)launchAppleMapsWithLocation:(CLLocationCoordinate2D)location;
+//+(void)launchAppleMapsWithSearch:(NSString *)search;
+//+(void)launchAppleMapsWithSearch:(NSString *)search nearLocation:(CLLocationCoordinate2D)location;
+//+(void)launchAppleMapsWithSearchNearCurrentLocation:(NSString *)search;
 
++(void)launchGoogleMapsWithDirectionsFromCurrentLocationToLocation:(CLLocationCoordinate2D)toLocation transportationMode:(MapsDirectionsMode)transportationMode;
++(void)launchGoogleMapsWithDirectionsFromLocation:(CLLocationCoordinate2D)fromLocation toLocation:(CLLocationCoordinate2D)toLocation transportationMode:(MapsDirectionsMode)transportationMode;
++(void)launchGoogleMapsWithLocation:(CLLocationCoordinate2D)location;
+//+(void)launchGoogleMapsWithSearch:(NSString *)search;
+//+(void)launchGoogleMapsWithSearch:(NSString *)search nearLocation:(CLLocationCoordinate2D)location;
+//+(void)launchGoogleMapsWithSearchNearCurrentLocation:(NSString *)search;
 
-+(void)launchWithDirectionsFromCurrentLocationToLocation:(CLLocationCoordinate2D)toLocation withTransportationMode:(MapsDirectionsMode)transportationMode;
-+(void)launchWithDirectionsFromLocation:(CLLocationCoordinate2D)fromLocation toLocation:(CLLocationCoordinate2D)toLocation withTransportationMode:(MapsDirectionsMode)transportationMode;
++(void)launchWazeWithDirectionsFromCurrentLocationToLocation:(CLLocationCoordinate2D)toLocation;
 
-+(void)launchWithLocation:(CLLocationCoordinate2D)location useViews:(int)views;
-
-+(void)launchWithSearch:(NSString *)search useViews:(int)views;
-+(void)launchWithSearch:(NSString *)search nearLocation:(CLLocationCoordinate2D)location useViews:(int)views;
-+(void)launchWithSearchNearCurrentLocation:(NSString *)search useViews:(int)views;
+//+(void)launchYandexMapsWithDirectionsFromCurrentLocationToLocation:(CLLocationCoordinate2D)toLocation transportationMode:(MapsDirectionsMode)transportationMode;
+//+(void)launchYandexMapsWithDirectionsFromLocation:(CLLocationCoordinate2D)fromLocation toLocation:(CLLocationCoordinate2D)toLocation transportationMode:(MapsDirectionsMode)transportationMode;
++(void)launchYandexMapsWithLocation:(CLLocationCoordinate2D)location;
+//+(void)launchYandexMapsWithSearch:(NSString *)search useViews:(int)views;
+//+(void)launchYandexMapsWithSearch:(NSString *)search nearLocation:(CLLocationCoordinate2D)location useViews:(int)views;
+//+(void)launchYandexMapsWithSearchNearCurrentLocation:(NSString *)search useViews:(int)views;
 
 @end
+

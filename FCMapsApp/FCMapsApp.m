@@ -5,253 +5,275 @@
 //  Copyright (c) 2013 Fabio Caccamo. All rights reserved.
 //
 
-#import "FCMapsApp.h"
 #import "FCCurrentLocationGeocoder.h"
+#import "FCMapsApp.h"
 
 
-#define kGOOGLE_MAPS_URL_SCHEME @"comgooglemaps://"
 #define kAPPLE_MAPS_URL_SCHEME_IOS5 @"http://maps.google.com/maps"
-#define kAPPLE_MAPS_URL_SCHEME_IOS6 @"http://maps.apple.com/"
+#define kAPPLE_MAPS_URL_SCHEME @"http://maps.apple.com/"
+#define kGOOGLE_MAPS_URL_SCHEME @"comgooglemaps://"
+#define kGOOGLE_MAPS_URL_SCHEME_X_CALLBACK_URL @"comgooglemaps-x-callback://"
+#define kWAZE_URL_SCHEME @"waze://"
+#define kYANDEX_MAPS_URL_SCHEME @"yandexmaps://maps.yandex.ru/"
 
 
 @implementation FCMapsApp
 
 
-+(NSString *)formatDirectionsMode:(MapsDirectionsMode)directionsmode
+static const CLLocationCoordinate2D currentLocationCoordinate = {-1000, -1000};
+static const CLLocationCoordinate2D geocodeLocationCoordinate = {-1001, -1001};
+
+
++(BOOL)canLaunchAppleMaps
 {
-    NSString * directionsmodeValue = @"";
+    return [self canOpenURLWithString:kAPPLE_MAPS_URL_SCHEME];
+}
+
+
++(BOOL)canLaunchGoogleMaps
+{
+    return [self canOpenURLWithString:kGOOGLE_MAPS_URL_SCHEME];
+}
+
+
++(BOOL)canLaunchGoogleMapsWithXCallbackURL
+{
+    return [self canOpenURLWithString:kGOOGLE_MAPS_URL_SCHEME_X_CALLBACK_URL];
+}
+
+
++(BOOL)canLaunchWaze
+{
+    return [self canOpenURLWithString:kWAZE_URL_SCHEME];
+}
+
+
++(BOOL)canLaunchYandexMaps
+{
+    return [self canOpenURLWithString:kYANDEX_MAPS_URL_SCHEME];
+}
+
+
++(BOOL)canOpenURLWithString:(NSString *)url
+{
+    return [[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:url]];
+}
+
+
++(void)launchAppleMapsWithDirectionsFromCurrentLocationToLocation:(CLLocationCoordinate2D)toLocation transportationMode:(MapsDirectionsMode)transportationMode
+{
+    [FCMapsApp launchAppleMapsWithDirectionsFromLocation:geocodeLocationCoordinate toLocation:toLocation transportationMode:transportationMode];
+}
+
+
++(void)launchAppleMapsWithDirectionsFromLocation:(CLLocationCoordinate2D)fromLocation toLocation:(CLLocationCoordinate2D)toLocation transportationMode:(MapsDirectionsMode)transportationMode
+{
+    //BOOL iOS5 = ![self canLaunchAppleMaps];
+    BOOL iOS5 = ([[[UIDevice currentDevice] systemVersion] floatValue] < 6.0);
     
-    switch (directionsmode)
+    if((fromLocation.latitude == geocodeLocationCoordinate.latitude) && (fromLocation.longitude == geocodeLocationCoordinate.longitude))
     {
-        case MapsDirectionsModeDriving:
-            directionsmodeValue = @"driving";
-            break;
+        FCCurrentLocationGeocoder * currentLocationGeocoder = [[FCCurrentLocationGeocoder alloc] init];
+        currentLocationGeocoder.prompt = iOS5;
+        [currentLocationGeocoder geocode:^(BOOL success){
             
-        case MapsDirectionsModeTransit:
-            directionsmodeValue = @"transit";
-            break;
-            
-        case MapsDirectionsModeWalking:
-            directionsmodeValue = @"walking";
-            break;
-    }
-    
-    return [NSString stringWithFormat:@"directionsmode=%@", directionsmodeValue];
-}
-
-
-+(NSString *)formatLocation:(CLLocationCoordinate2D)location as:(NSString *)as
-{
-    return [NSString stringWithFormat:@"%@=%f,%f", as, location.latitude, location.longitude];
-}
-
-
-+(NSString *)formatMapmode:(int)mapmode
-{
-    NSString * mapmodeValue = @"";
-    
-    switch (mapmode)
-    {
-        case MapsModeStandard:
-            mapmodeValue = @"standard";
-            break;
-            
-        case MapsModeStreetView:
-            mapmodeValue = @"streetview";
-            break;
-    }
-    
-    return [NSString stringWithFormat:@"mapmode=%@", mapmodeValue];
-}
-
-
-+(NSString *)formatSearch:(NSString *)search
-{
-    return [NSString stringWithFormat:@"q=%@", [search stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
-}
-
-
-+(NSString *)formatViews:(int)views
-{
-    NSString * viewsString = @"";
-    NSMutableArray * viewsValues = [NSMutableArray array];
-    
-    if((views & MapsViewSatellite) == MapsViewSatellite)
-    {
-        [viewsValues addObject:@"satellite"];
-    }
-    
-    if((views & MapsViewTraffic) == MapsViewTraffic)
-    {
-        [viewsValues addObject:@"traffic"];
-    }
-    
-    if((views & MapsViewTransit) == MapsViewTransit)
-    {
-        [viewsValues addObject:@"transit"];
-    }
-    
-    if([viewsValues count] > 0)
-    {
-        viewsString = [viewsValues componentsJoinedByString:@","];
-    }
-    
-    return [NSString stringWithFormat:@"views=%@", viewsString];
-}
-
-
-static BOOL _useGoogleMaps = TRUE;
-
-
-+(void)useGoogleMaps:(BOOL)value
-{
-    _useGoogleMaps = value;
-}
-
-
-+(BOOL)isGoogleMapsInstalled
-{
-    return [[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:kGOOGLE_MAPS_URL_SCHEME]];
-}
-
-
-+(void)launchWithDirectionsFromCurrentLocationToLocation:(CLLocationCoordinate2D)toLocation withTransportationMode:(MapsDirectionsMode)transportationMode
-{
-    FCCurrentLocationGeocoder * currentLocationGeocoder = [[FCCurrentLocationGeocoder alloc] init];
-    
-    [currentLocationGeocoder geocode:^(BOOL success)
-    {
-         if(success)
-         {
-             CLLocationCoordinate2D currentLocation = currentLocationGeocoder.location.coordinate;
-             
-             [FCMapsApp launchWithDirectionsFromLocation:currentLocation toLocation:toLocation withTransportationMode:transportationMode];
-         }
-         else {
-             
-             NSArray * parameters = [NSArray arrayWithObjects:
-                                     @"saddr=",
-                                     [FCMapsApp formatLocation:toLocation as:@"daddr"],
-                                     [FCMapsApp formatDirectionsMode:transportationMode],
-                                     [FCMapsApp formatMapmode:MapsModeStandard],
-                                     nil];
-             
-             [FCMapsApp launchWithParameters:parameters];
-         }
-     }];
-}
-
-
-+(void)launchWithDirectionsFromLocation:(CLLocationCoordinate2D)fromLocation toLocation:(CLLocationCoordinate2D)toLocation withTransportationMode:(MapsDirectionsMode)transportationMode
-{
-    if(CLLocationCoordinate2DIsValid(fromLocation) && CLLocationCoordinate2DIsValid(toLocation))
-    {
-        NSArray * parameters = [NSArray arrayWithObjects:
-                                [FCMapsApp formatLocation:fromLocation as:@"saddr"],
-                                [FCMapsApp formatLocation:toLocation as:@"daddr"],
-                                [FCMapsApp formatDirectionsMode:transportationMode],
-                                [FCMapsApp formatMapmode:MapsModeStandard],
-                                nil];
+            if(success)
+            {
+                CLLocationCoordinate2D currentLocation = currentLocationGeocoder.location.coordinate;
+                
+                [FCMapsApp launchAppleMapsWithDirectionsFromLocation:currentLocation toLocation:toLocation transportationMode:transportationMode];
+            }
+            else {
+                
+                if(!iOS5)
+                {
+                    [FCMapsApp launchAppleMapsWithDirectionsFromLocation:currentLocationCoordinate toLocation:toLocation transportationMode:transportationMode];
+                }
+            }
+        }];
         
-        [FCMapsApp launchWithParameters:parameters];
+        return;
     }
-}
-
-
-+(void)launchWithLocation:(CLLocationCoordinate2D)location useViews:(int)views
-{
-    if(CLLocationCoordinate2DIsValid(location))
-    {
-        NSArray * parameters = [NSArray arrayWithObjects:
-                                [FCMapsApp formatLocation:location as:@"q"],
-                                [FCMapsApp formatViews:views],
-                                [FCMapsApp formatMapmode:MapsModeStandard],
-                                nil];
-        
-        [FCMapsApp launchWithParameters:parameters];
-    }
-}
-
-
-+(void)launchWithSearch:(NSString *)search useViews:(int)views
-{
-    if(![search isEqualToString:@""])
-    {
-        NSArray * parameters = [NSArray arrayWithObjects:
-                                [FCMapsApp formatSearch:search],
-                                [FCMapsApp formatViews:views],
-                                [FCMapsApp formatMapmode:MapsModeStandard],
-                                nil];
-        
-        [FCMapsApp launchWithParameters:parameters];
-    }
-}
-
-
-+(void)launchWithSearch:(NSString *)search nearLocation:(CLLocationCoordinate2D)location useViews:(int)views
-{
-    if(![search isEqualToString:@""] && CLLocationCoordinate2DIsValid(location))
-    {
-        NSArray * parameters = [NSArray arrayWithObjects:
-                                [FCMapsApp formatSearch:search],
-                                [FCMapsApp formatLocation:location as:@"center"],
-                                [FCMapsApp formatLocation:location as:@"near"], //added for apple maps, google maps ignore it
-                                [FCMapsApp formatViews:views],
-                                [FCMapsApp formatMapmode:MapsModeStandard],
-                                nil];
-        
-        [FCMapsApp launchWithParameters:parameters];
-    }
-}
-
-
-+(void)launchWithSearchNearCurrentLocation:(NSString *)search useViews:(int)views
-{
-    FCCurrentLocationGeocoder * currentLocationGeocoder = [[FCCurrentLocationGeocoder alloc] init];
     
-    [currentLocationGeocoder geocode:^(BOOL success)
-     {
-         if(success)
-         {
-             CLLocationCoordinate2D currentLocation = currentLocationGeocoder.location.coordinate;
-             
-             [FCMapsApp launchWithSearch:search nearLocation:currentLocation useViews:views];
-         }
-     }];
-}
-
-
-+(void)launchWithParameters:(NSArray *)parameters
-{
-    NSString * urlQueryString = [NSString stringWithFormat:@"?%@", [parameters componentsJoinedByString:@"&"]];
-    NSString * urlPrefix;
-    NSString * urlString;
-    NSURL * url;
     
-    if(_useGoogleMaps && [FCMapsApp isGoogleMapsInstalled])
+    NSString *queryString;
+    
+    if(iOS5)
     {
-        urlPrefix = kGOOGLE_MAPS_URL_SCHEME;
+        /*
+         http://stackoverflow.com/questions/1056984/open-google-maps-to-bus-directions
+         
+         dirflg=h - Switches on "Avoid Highways" route finding mode.
+         dirflg=t - Switches on "Avoid Tolls" route finding mode.
+         dirflg=r - Switches on "Public Transit" - only works in some areas.
+         dirflg=w - Switches to walking directions - still in beta.
+         dirflg=d - Switches to driving directions.
+         
+         maps transit mode not supported
+         https://developer.apple.com/library/ios/featuredarticles/iPhoneURLScheme_Reference/MapLinks/MapLinks.html
+        */
+        
+        queryString = [NSString stringWithFormat:@"saddr=%@&daddr=%@&dirflg=%@",
+                            [NSString stringWithFormat:@"%f,%f", fromLocation.latitude, fromLocation.longitude],
+                            [NSString stringWithFormat:@"%f,%f", toLocation.latitude, toLocation.longitude],
+                            [@[@"d", @"w"] objectAtIndex:transportationMode]
+                        ];
     }
     else {
         
-        float iOS6 = 6.0;
-        
-        if([[[UIDevice currentDevice] systemVersion] floatValue] < iOS6)
-        {
-            urlPrefix = kAPPLE_MAPS_URL_SCHEME_IOS5;
-        }
-        else {
-            urlPrefix = kAPPLE_MAPS_URL_SCHEME_IOS6;
-        }
+        queryString = [NSString stringWithFormat:@"saddr=%@&daddr=%@&directionsmode=%@",
+                            (((fromLocation.latitude == currentLocationCoordinate.latitude) && (fromLocation.longitude == currentLocationCoordinate.longitude)) ? @"Current+Location" : [NSString stringWithFormat:@"%f,%f", fromLocation.latitude, fromLocation.longitude]),
+                            [NSString stringWithFormat:@"%f,%f", toLocation.latitude, toLocation.longitude],
+                            [@[@"driving", @"walking"] objectAtIndex:transportationMode]
+                        ];
     }
     
-    urlString = [NSString stringWithFormat:@"%@%@", urlPrefix, urlQueryString];
-    //NSLog(@"%@", urlString);
+    [self launchAppleMapsWithQueryString:queryString];
+}
+
+
++(void)launchAppleMapsWithLocation:(CLLocationCoordinate2D)location
+{
+    if(CLLocationCoordinate2DIsValid(location))
+    {
+        NSString *queryString = [NSString stringWithFormat:@"q=%f,%f", location.latitude, location.longitude];
+        
+        [self launchAppleMapsWithQueryString:queryString];
+    }
+}
+
+
++(void)launchAppleMapsWithQueryString:(NSString *)queryString
+{
+    [self openURLWithScheme:kAPPLE_MAPS_URL_SCHEME andQueryString:queryString];
+}
+
+
++(void)launchGoogleMapsWithDirectionsFromCurrentLocationToLocation:(CLLocationCoordinate2D)toLocation transportationMode:(MapsDirectionsMode)transportationMode
+{
+    [FCMapsApp launchGoogleMapsWithDirectionsFromLocation:geocodeLocationCoordinate toLocation:toLocation transportationMode:transportationMode];
+}
+
+
++(void)launchGoogleMapsWithDirectionsFromLocation:(CLLocationCoordinate2D)fromLocation toLocation:(CLLocationCoordinate2D)toLocation transportationMode:(MapsDirectionsMode)transportationMode
+{
+    if([self canLaunchGoogleMaps])
+    {
+        if((fromLocation.latitude == geocodeLocationCoordinate.latitude) && (fromLocation.longitude == geocodeLocationCoordinate.longitude))
+        {
+            FCCurrentLocationGeocoder * currentLocationGeocoder = [[FCCurrentLocationGeocoder alloc] init];
+            currentLocationGeocoder.prompt = NO;
+            [currentLocationGeocoder geocode:^(BOOL success){
+                
+                if(success)
+                {
+                    CLLocationCoordinate2D currentLocation = currentLocationGeocoder.location.coordinate;
+                    
+                    [FCMapsApp launchGoogleMapsWithDirectionsFromLocation:currentLocation toLocation:toLocation transportationMode:transportationMode];
+                }
+                else {
+                    
+                    [FCMapsApp launchGoogleMapsWithDirectionsFromLocation:currentLocationCoordinate toLocation:toLocation transportationMode:transportationMode];
+                }
+            }];
+            
+            return;
+        }
+        
+        NSString *queryString = [NSString stringWithFormat:@"saddr=%@&daddr=%@&directionsmode=%@",
+                                    (((fromLocation.latitude == currentLocationCoordinate.latitude) && (fromLocation.longitude == currentLocationCoordinate.longitude)) ? @"" : [NSString stringWithFormat:@"%f,%f", fromLocation.latitude, fromLocation.longitude]),
+                                    [NSString stringWithFormat:@"%f,%f", toLocation.latitude, toLocation.longitude],
+                                    [@[@"driving", @"walking"] objectAtIndex:transportationMode]
+                                ];
+        
+        [self launchGoogleMapsWithQueryString:queryString];
+    }
+}
+
+
++(void)launchGoogleMapsWithLocation:(CLLocationCoordinate2D)location
+{
+    if(CLLocationCoordinate2DIsValid(location))
+    {
+        NSString *queryString = [NSString stringWithFormat:@"q=%f,%f", location.latitude, location.longitude];
+        
+        [self launchGoogleMapsWithQueryString:queryString];
+    }
+}
+
+
++(void)launchGoogleMapsWithQueryString:(NSString *)queryString
+{
+    /*
+    //TODO: add support for x-callback-url
     
-    url = [NSURL URLWithString:urlString];
+    if([self canLaunchGoogleMapsWithXCallbackURL])
+    {
+        NSString *appName = [[NSBundle bundleWithIdentifier:@"BundleIdentifier"] objectForInfoDictionaryKey:@"CFBundleExecutable"];
+        NSString *appScheme = @"";
+     
+        //http://stackoverflow.com/questions/7244317/will-my-app-respond-to-a-url-scheme
+        
+        //get the first urltype
+        BOOL schemeIsInPlist = NO; // find out if the sceme is in the plist file.
+        NSBundle* mainBundle = [NSBundle mainBundle];
+        NSArray* cfBundleURLTypes = [mainBundle objectForInfoDictionaryKey:@"CFBundleURLTypes"];
+        if ([cfBundleURLTypes isKindOfClass:[NSArray class]] && [cfBundleURLTypes lastObject]) {
+            NSDictionary* cfBundleURLTypes0 = [cfBundleURLTypes objectAtIndex:0];
+            if ([cfBundleURLTypes0 isKindOfClass:[NSDictionary class]]) {
+                NSArray* cfBundleURLSchemes = [cfBundleURLTypes0 objectForKey:@"CFBundleURLSchemes"];
+                if ([cfBundleURLSchemes isKindOfClass:[NSArray class]]) {
+                    for (NSString* scheme in cfBundleURLSchemes) {
+                        if ([scheme isKindOfClass:[NSString class]] && [url hasPrefix:scheme]) {
+                            schemeIsInPlist = YES;
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+        
+        //then add parameters to the query-string
+        queryString = [NSString stringWithFormat:@"%@&x-success=%@&x-source=%@", queryString, appName, appScheme];
+        
+        
+        [self openURLWithScheme:kGOOGLE_MAPS_URL_SCHEME_X_CALLBACK_URL andQueryString:queryString];
+    }
+    else {
+        [self openURLWithScheme:kGOOGLE_MAPS_URL_SCHEME andQueryString:queryString];
+    }
+    */
     
-    [[UIApplication sharedApplication] openURL:url];
+    [self openURLWithScheme:kGOOGLE_MAPS_URL_SCHEME andQueryString:queryString];
+}
+
+
++(void)launchWazeWithDirectionsFromCurrentLocationToLocation:(CLLocationCoordinate2D)toLocation 
+{
+    NSString * queryString = [NSString stringWithFormat:@"ll=%f,%f&navigate=yes", toLocation.latitude, toLocation.longitude];
+    
+    [self openURLWithScheme:kWAZE_URL_SCHEME andQueryString:queryString];
+}
+
+
++(void)launchYandexMapsWithLocation:(CLLocationCoordinate2D)location
+{
+    NSString *queryString = [NSString stringWithFormat:@"pt=%f,%f", location.longitude, location.latitude];
+    
+    [self openURLWithScheme:kYANDEX_MAPS_URL_SCHEME andQueryString:queryString];
+}
+
+
++(void)openURLWithScheme:(NSString *)urlScheme andQueryString:(NSString *)queryString
+{
+    NSString *urlString = [NSString stringWithFormat:@"%@?%@", urlScheme, queryString];
+    NSURL *url = [NSURL URLWithString:urlString];
+    
+    if( [[UIApplication sharedApplication] canOpenURL:url] ){
+        [[UIApplication sharedApplication] openURL:url];
+    }
 }
 
 
 @end
+
