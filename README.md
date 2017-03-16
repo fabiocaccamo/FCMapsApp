@@ -1,4 +1,4 @@
-#FCMapsApp
+# FCMapsApp
 
 Maps applications wrapper for show locations / get directions. <br />
 List of supported applications:
@@ -8,12 +8,12 @@ List of supported applications:
 - Waze
 - Yandex Maps
 
-##Requirements & Dependecies
+## Requirements & Dependecies
 
 - iOS >= 5.0
 - CoreLocation Framework
 - [FCCurrentLocationGeocoder](https://github.com/fabiocaccamo/FCCurrentLocationGeocoder)
 
-##API
+## API
 
 See [FCMapsApp.h](https://github.com/fabiocaccamo/FCMapsApp/blob/master/FCMapsApp/FCMapsApp.h) for all of the methods.
